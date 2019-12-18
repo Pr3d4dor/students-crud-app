@@ -7,7 +7,7 @@ export function setCurrentStudent({ commit }, data) {
 }
 
 export function resetCurrentStudent({ commit }) {
-    commit('SET_CURRENT_STUDENT', {});
+    commit('SET_CURRENT_STUDENT', null);
 }
 
 export function addStudent({ commit }, data) {
