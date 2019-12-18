@@ -39,11 +39,14 @@ export default {
         Item
     },
     mounted() {
-        AsyncStorage.getItem('@StudendsCrud:students').then((students) => {
+        AsyncStorage.getItem('@StudendsCrud:students').then((data) => {
+            const students = JSON.parse(data);
             this.$store.state.loading = true;
 
-            if (students) {
-                this.$store.commit('SET_STUDENTS', JSON.parse(students));
+            if (students.length > 0) {
+                this.$store.commit('SET_STUDENTS', students);
+            } else {
+                this.$store.commit('SET_STUDENTS', []);
             }
 
             this.$store.state.loading = false;
