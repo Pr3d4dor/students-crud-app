@@ -71,9 +71,12 @@
                     <nb-input v-model="number" :on-blur="() => $v.number.$touch()" keyboardType="numeric"/>
                 </nb-item>
 
-                <nb-item stackedLabel>
+                <nb-item stackedLabel
+                     :error="$v.complement.$error && $v.complement.$dirty"
+                     :success="!$v.complement.$error && $v.complement.$dirty"
+                >
                     <nb-label>Complemento</nb-label>
-                    <nb-input v-model="complement" />
+                    <nb-input v-model="complement" :on-blur="() => $v.complement.$touch()" />
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -169,10 +172,9 @@ export default {
             motherName: "",
             motherCpf: "",
             preferredMonthlyPaymentDay: "",
-            defaultDate: new Date('2018-06-04'),
-            minimumDate: new Date('2018-01-01'),
-            maximumDate: new Date('2018-12-31'),
-            chosenDate:  new Date(),
+            defaultDate: new Date('1990-01-02'),
+            minimumDate: new Date('1900-01-01'),
+            maximumDate: new Date(),
         }
     },
     created() {
@@ -290,6 +292,9 @@ export default {
         number: {
             required,
             numeric,
+        },
+        complement: {
+            maxLength: maxLength(50),
         },
         district: {
             required,
