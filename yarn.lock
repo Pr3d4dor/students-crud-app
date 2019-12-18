@@ -1655,6 +1655,11 @@ braces@^2.3.1:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
+brazilian-values@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/brazilian-values/-/brazilian-values-0.7.0.tgz#afac15478afdf13641aa111993a167350c17ecc5"
+  integrity sha512-sGP7WV2V1bezg3mtSF690nLE2Ooqwbrf+hdiDfP65UWIoB9nV9ENPyc9rct4yBuyXDhB+NmZYckCQbs8RI5GLw==
+
 browserslist@^4.6.0, browserslist@^4.8.2:
   version "4.8.2"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.8.2.tgz#b45720ad5fbc8713b7253c20766f701c9a694289"
@@ -1772,6 +1777,13 @@ capture-exit@^2.0.0:
   integrity sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==
   dependencies:
     rsvp "^4.8.4"
+
+cep-promise@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/cep-promise/-/cep-promise-3.0.8.tgz#2fd76a2103f117939a9c84f618777fc87054132a"
+  integrity sha512-mO8b8fAr6fyixa73daLewNygjZr2iZefVUTc9Iz93RU1gGPQl10tNcttdluVTRlt3n/GnwPwCnNCnmlO/1Jf2g==
+  dependencies:
+    isomorphic-unfetch "2.0.0"
 
 chalk@1.1.1:
   version "1.1.1"
@@ -3272,6 +3284,14 @@ isomorphic-fetch@^2.1.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
+isomorphic-unfetch@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-unfetch/-/isomorphic-unfetch-2.0.0.tgz#f50140a4c163d7582b5f37f1591968c4f809a645"
+  integrity sha1-9QFApMFj11grXzfxWRloxPgJpkU=
+  dependencies:
+    node-fetch "^1.7.1"
+    unfetch "^3.0.0"
+
 jest-get-type@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-24.9.0.tgz#1684a0c8a50f2e4901b6644ae861f579eed2ef0e"
@@ -4104,7 +4124,7 @@ no-case@^2.2.0, no-case@^2.3.2:
   dependencies:
     lower-case "^1.1.1"
 
-node-fetch@^1.0.1:
+node-fetch@^1.0.1, node-fetch@^1.7.1:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
   integrity sha512-NhZ4CsKx7cYm2vSrBAr2PvFOe6sWDf0UYLRqA6svUYg7+/TSfVAu49jYC4BvQ4Sms9SZgdqGBgroqfDhJdTyKQ==
@@ -5766,6 +5786,11 @@ ultron@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
   integrity sha512-UIEXBNeYmKptWH6z8ZnqTeS8fV74zG0/eRU9VGkpzz+LIJNs8W/zM/L+7ctCkRrgbNnnR0xxw4bKOr0cW0N0Og==
+
+unfetch@^3.0.0:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-3.1.2.tgz#dc271ef77a2800768f7b459673c5604b5101ef77"
+  integrity sha512-L0qrK7ZeAudGiKYw6nzFjnJ2D5WHblUBwmHIqtPS6oKUd+Hcpk7/hKsSmcHsTlpd1TbTNsiRBUKRq3bHLNIqIw==
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"

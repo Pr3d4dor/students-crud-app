@@ -8,6 +8,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "brazilian-values": "^0.7.0",
+    "cep-promise": "^3.0.8",
     "expo": "~36.0.0",
     "native-base": "^2.13.8",
     "react": "~16.9.0",
