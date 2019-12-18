@@ -172,7 +172,6 @@ export default {
             motherName: "",
             motherCpf: "",
             preferredMonthlyPaymentDay: "",
-            defaultDate: new Date('1990-01-02'),
             minimumDate: new Date('1900-01-01'),
             maximumDate: new Date(),
         }
@@ -237,6 +236,13 @@ export default {
     },
     computed: {
         ...mapGetters(['currentStudent']),
+        defaultDate() {
+          if (!this.currentStudent || !this.currentStudent.birthdate) {
+              return new Date('1990-01-02');
+          }
+
+          return new Date(this.currentStudent.birthdate);
+        },
         gradeOptions() {
             const gradeOptions = [];
 
