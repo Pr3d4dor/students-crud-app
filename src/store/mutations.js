@@ -18,15 +18,16 @@ export function SET_STUDENTS(state, data) {
 
 export function ADD_STUDENT(state, data) {
     state.students.push({
+        ...data,
         id: state.students.length,
-        ...data
     });
+
     updateStorage(state.students);
 }
 
 export function EDIT_STUDENT(state, data) {
     const { id } = data;
-    const student = state.students[id];
+    const student = state.students.find(student => student.id === id);
 
     if (!student) {
         return;
@@ -37,12 +38,12 @@ export function EDIT_STUDENT(state, data) {
 }
 
 export function REMOVE_STUDENT(state, id) {
-    const student = state.students[id];
+    const index = state.students.findIndex(student => student.id === id);
 
-    if (!student) {
+    if (index === -1) {
         return;
     }
 
-    state.students.splice(id, 1);
+    state.students.splice(index, 1);
     updateStorage(state.students);
 }
