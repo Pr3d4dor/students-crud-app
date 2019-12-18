@@ -9,12 +9,19 @@
   },
   "dependencies": {
     "expo": "~36.0.0",
+    "native-base": "^2.13.8",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
+    "react-native": "^0.61.5",
+    "react-native-gesture-handler": "^1.5.2",
+    "react-native-paper": "^3.3.0",
+    "react-native-reanimated": "^1.4.0",
     "react-native-web": "~0.11.7",
     "vue-native-core": "0.1.4",
-    "vue-native-helper": "0.1.4"
+    "vue-native-helper": "0.1.4",
+    "vue-native-router": "^0.1.1",
+    "vuelidate": "^0.7.4",
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
