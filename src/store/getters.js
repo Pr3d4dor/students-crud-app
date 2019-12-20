@@ -5,3 +5,7 @@ export function students(state) {
 export function currentStudent(state) {
     return state.currentStudent;
 }
+
+export function loading(state) {
+    return state.loading;
+}

@@ -13,13 +13,16 @@
         </nb-header>
 
         <nb-content padder>
-            <item
-                v-for="item in students"
-                :key="item.id"
-                :data="item"
-                @remove="onRemoveStudent(item.id)"
-                @edit="onEditStudent(item)"
-            />
+            <nb-spinner v-if="loading"></nb-spinner>
+            <nb-view v-else>
+                <item
+                    v-for="item in students"
+                    :key="item.id"
+                    :data="item"
+                    @remove="onRemoveStudent(item.id)"
+                    @edit="onEditStudent(item)"
+                />
+            </nb-view>
         </nb-content>
     </nb-container>
 </template>
@@ -39,18 +42,7 @@ export default {
         Item
     },
     mounted() {
-        AsyncStorage.getItem('@StudendsCrud:students').then((data) => {
-            const students = JSON.parse(data);
-            this.$store.state.loading = true;
-
-            if (students.length > 0) {
-                this.$store.commit('SET_STUDENTS', students);
-            } else {
-                this.$store.commit('SET_STUDENTS', []);
-            }
-
-            this.$store.state.loading = false;
-        })
+        this.loadAllStudents();
     },
     data() {
         return {
@@ -63,7 +55,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(['getStudent', 'removeStudent', 'setCurrentStudent', 'resetCurrentStudent']),
+        ...mapActions(['loadAllStudents', 'removeStudent', 'setCurrentStudent', 'resetCurrentStudent']),
         onRemoveStudent(id) {
             Alert.alert(
                 'Confirmação',
@@ -99,7 +91,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['students']),
+        ...mapGetters(['students', 'loading']),
     },
 };
 </script>

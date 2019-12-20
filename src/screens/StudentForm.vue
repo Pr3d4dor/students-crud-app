@@ -48,11 +48,11 @@
                 </nb-item>
 
                 <nb-item stackedLabel
-                     :error="$v.cep.$error && $v.cep.$dirty"
-                     :success="!$v.cep.$error && $v.cep.$dirty"
+                     :error="$v.postcode.$error && $v.postcode.$dirty"
+                     :success="!$v.postcode.$error && $v.postcode.$dirty"
                 >
                     <nb-label>CEP</nb-label>
-                    <nb-input v-model="cep" :on-complete="() => $v.cep.$touch()" keyboardType="numeric"/>
+                    <nb-input v-model="postcode" :on-complete="() => $v.postcode.$touch()" keyboardType="numeric"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -80,11 +80,11 @@
                 </nb-item>
 
                 <nb-item stackedLabel
-                     :error="$v.district.$error && $v.district.$dirty"
-                     :success="!$v.district.$error && $v.district.$dirty"
+                     :error="$v.neighborhood.$error && $v.neighborhood.$dirty"
+                     :success="!$v.neighborhood.$error && $v.neighborhood.$dirty"
                 >
                     <nb-label>Bairro</nb-label>
-                    <nb-input v-model="district" :on-blur="() => $v.district.$touch()"/>
+                    <nb-input v-model="neighborhood" :on-blur="() => $v.neighborhood.$touch()"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -120,11 +120,11 @@
                 </nb-item>
 
                 <nb-item stackedLabel
-                     :error="$v.preferredMonthlyPaymentDay.$error && $v.preferredMonthlyPaymentDay.$dirty"
-                     :success="!$v.preferredMonthlyPaymentDay.$error && $v.preferredMonthlyPaymentDay.$dirty"
+                     :error="$v.preferredDayForMonthlyPayment.$error && $v.preferredDayForMonthlyPayment.$dirty"
+                     :success="!$v.preferredDayForMonthlyPayment.$error && $v.preferredDayForMonthlyPayment.$dirty"
                 >
                     <nb-label>Dia Pref. para Pagamento da Mensalidade</nb-label>
-                    <nb-input v-model="preferredMonthlyPaymentDay" :on-blur="() => $v.preferredMonthlyPaymentDay.$touch()" keyboardType="numeric"/>
+                    <nb-input v-model="preferredDayForMonthlyPayment" :on-blur="() => $v.preferredDayForMonthlyPayment.$touch()" keyboardType="numeric"/>
                 </nb-item>
 
                 <nb-item class="action-buttons" full>
@@ -147,11 +147,13 @@ import React from "react";
 import cep from "cep-promise";
 import { isCPF } from 'brazilian-values';
 import { required, maxLength, numeric } from "vuelidate/lib/validators"
+import camelCaseKeys from "camelcase-keys";
+import moment from "moment";
 
 const gradeValidator = value => [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(Number(value));
-const cepValidator = value => cep(value);
+const postcodeValidator = value => cep(value);
 const cpfValidator = value => isCPF(value);
-const preferredMonthlyPaymentDayValidator = value => [5, 10, 15, 20, 25].includes(Number(value));
+const preferredDayForMonthlyPaymentValidator = value => [5, 10, 15, 20, 25].includes(Number(value));
 
 export default {
     props: {
@@ -162,16 +164,16 @@ export default {
             name: "",
             birthdate: "",
             grade: "",
-            cep: "",
+            postcode: "",
             street: "",
             number: "",
             complement: "",
-            district: "",
+            neighborhood: "",
             city: "",
             state: "",
             motherName: "",
             motherCpf: "",
-            preferredMonthlyPaymentDay: "",
+            preferredDayForMonthlyPayment: "",
             minimumDate: new Date('1900-01-01'),
             maximumDate: new Date(),
         }
@@ -187,14 +189,19 @@ export default {
                 return;
             }
 
-            Object.assign(this, this.currentStudent);
+            const values = camelCaseKeys(this.currentStudent);
+            for (let key of Object.keys(values)) {
+                values[key] = String(values[key]);
+            }
+
+            Object.assign(this, values);
             this.$v.$touch();
         },
         goToHomeScreen() {
             this.navigation.navigate("Home");
         },
         setBirthdate(value) {
-            this.birthdate = value;
+            this.birthdate = moment(value).format('DD/MM/YYYY');
             this.$v.birthdate.$touch();
         },
         async saveStudent() {
@@ -211,7 +218,7 @@ export default {
             }
 
             try {
-                if (this.currentStudent.id || this.currentStudent.id === 0) {
+                if (this.currentStudent) {
                     await this.editStudent(this.formData);
                 } else {
                     await this.addStudent(this.formData);
@@ -223,6 +230,7 @@ export default {
                     type: "success"
                 });
             } catch (e) {
+                console.log({ e });
                 Toast.show({
                     text: "Falha ao salvar estudante!",
                     buttonText: "Ok",
@@ -241,7 +249,7 @@ export default {
               return new Date('1990-01-02');
           }
 
-          return new Date(this.currentStudent.birthdate);
+          return moment(this.currentStudent.birthdate, "DD/MM/YYYY").toDate();
         },
         gradeOptions() {
             const gradeOptions = [];
@@ -261,16 +269,16 @@ export default {
                 name: this.name,
                 birthdate: this.birthdate,
                 grade: this.grade,
-                cep: this.cep,
+                postcode: this.postcode,
                 street: this.street,
                 number: this.number,
                 complement: this.complement,
-                district: this.district,
+                neighborhood: this.neighborhood,
                 city: this.city,
                 state: this.state,
                 motherName: this.motherName,
                 motherCpf: this.motherCpf,
-                preferredMonthlyPaymentDay: this.preferredMonthlyPaymentDay,
+                preferredDayForMonthlyPayment: this.preferredDayForMonthlyPayment,
             }
         },
     },
@@ -287,9 +295,9 @@ export default {
             numeric,
             gradeValidator,
         },
-        cep: {
+        postcode: {
             required,
-            cepValidator,
+            postcodeValidator,
         },
         street: {
             required,
@@ -302,7 +310,7 @@ export default {
         complement: {
             maxLength: maxLength(50),
         },
-        district: {
+        neighborhood: {
             required,
             maxLength: maxLength(100),
         },
@@ -322,10 +330,10 @@ export default {
             required,
             cpfValidator
         },
-        preferredMonthlyPaymentDay: {
+        preferredDayForMonthlyPayment: {
             required,
             numeric,
-            preferredMonthlyPaymentDayValidator,
+            preferredDayForMonthlyPaymentValidator,
         }
     }
 }
