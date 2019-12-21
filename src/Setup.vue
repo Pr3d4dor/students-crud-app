@@ -15,6 +15,8 @@ Vue.use(Vuelidate);
 Vue.use(VueNativeBase);
 Vue.prototype.$store = store;
 
+console.disableYellowBox = true;
+
 export default {
     components: { App },
 };
