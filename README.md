@@ -4,6 +4,13 @@ Um app simples que implementa o CRUD (Create, Read, Update e Delete) de estudant
 
 ## Instalação
 
+* **Instalar o backend (API):**
+```
+Seguir as instruções de instalação: https://github.com/Pr3d4dor/students-crud
+
+Ajustar a constante API_ENDPOINT no arquivo src/services/api.js
+```
+
 * **Clonar o repositório:**
 
 ```sh
@@ -33,9 +40,12 @@ npm install --global expo-cli
 
 ## Bibliotecas utilizadas
 
+* "apisauce": "^1.1.1",
 * "brazilian-values": "^0.7.0",
+* "camelcase-keys": "^6.1.1",
 * "cep-promise": "^3.0.8",
 * "expo": "~36.0.0",
+* "moment": "^2.24.0",
 * "expo-font": "~8.0.0",
 * "native-base": "^2.13.8",
 * "react": "~16.9.0",
@@ -45,6 +55,7 @@ npm install --global expo-cli
 * "react-native-paper": "^3.4.0",
 * "react-native-reanimated": "^1.4.0",
 * "react-native-web": "~0.11.7",
+* "snakecase-keys": "^3.1.0",
 * "vue-native-core": "0.1.4",
 * "vue-native-helper": "0.1.4",
 * "vue-native-router": "^0.1.1",
