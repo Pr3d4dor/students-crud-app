@@ -19,7 +19,7 @@
                      :success="!$v.name.$error && $v.name.$dirty"
                 >
                     <nb-label>Nome</nb-label>
-                    <nb-input v-model="name" :on-blur="() => $v.name.$touch()" autoFocus autoCapitalize="words"/>
+                    <nb-input v-model="name" :on-blur="() => $v.name.$touch()" autoFocus autoCapitalize="words" :maxLength="100"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -27,7 +27,7 @@
                      :success="!$v.grade.$error && $v.grade.$dirty"
                 >
                     <nb-label>Serie de Ingresso</nb-label>
-                    <nb-input v-model="grade" :on-blur="() => $v.grade.$touch()" keyboardType="numeric"/>
+                    <nb-input v-model="grade" :on-blur="() => $v.grade.$touch()" keyboardType="numeric" :maxLength="1"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -52,7 +52,7 @@
                      :success="!$v.postcode.$error && $v.postcode.$dirty"
                 >
                     <nb-label>CEP</nb-label>
-                    <nb-input v-model="postcode" :on-complete="() => $v.postcode.$touch()" keyboardType="numeric"/>
+                    <nb-input v-model="postcode" :on-blur="onPostcodeComplete" keyboardType="numeric" :maxLength="8"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -60,7 +60,7 @@
                      :success="!$v.street.$error && $v.street.$dirty"
                 >
                     <nb-label>Rua</nb-label>
-                    <nb-input v-model="street" :on-blur="() => $v.street.$touch()"/>
+                    <nb-input v-model="street" :on-blur="() => $v.street.$touch()" :maxLength="120"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -68,7 +68,7 @@
                      :success="!$v.number.$error && $v.number.$dirty"
                 >
                     <nb-label>Numero</nb-label>
-                    <nb-input v-model="number" :on-blur="() => $v.number.$touch()" keyboardType="numeric"/>
+                    <nb-input v-model="number" :on-blur="() => $v.number.$touch()" keyboardType="numeric" />
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -76,7 +76,7 @@
                      :success="!$v.complement.$error && $v.complement.$dirty"
                 >
                     <nb-label>Complemento</nb-label>
-                    <nb-input v-model="complement" :on-blur="() => $v.complement.$touch()" />
+                    <nb-input v-model="complement" :on-blur="() => $v.complement.$touch()" :maxLength="50" />
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -84,7 +84,7 @@
                      :success="!$v.neighborhood.$error && $v.neighborhood.$dirty"
                 >
                     <nb-label>Bairro</nb-label>
-                    <nb-input v-model="neighborhood" :on-blur="() => $v.neighborhood.$touch()"/>
+                    <nb-input v-model="neighborhood" :on-blur="() => $v.neighborhood.$touch()" :maxLength="100"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -92,7 +92,7 @@
                      :success="!$v.city.$error && $v.city.$dirty"
                 >
                     <nb-label>Cidade</nb-label>
-                    <nb-input v-model="city" :on-blur="() => $v.city.$touch()"/>
+                    <nb-input v-model="city" :on-blur="() => $v.city.$touch()" :maxLength="100"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -100,7 +100,7 @@
                      :success="!$v.state.$error && $v.state.$dirty"
                 >
                     <nb-label>Estado</nb-label>
-                    <nb-input v-model="state" :on-blur="() => $v.state.$touch()"/>
+                    <nb-input v-model="state" :on-blur="() => $v.state.$touch()" :maxLength="2"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -108,7 +108,7 @@
                      :success="!$v.motherName.$error && $v.motherName.$dirty"
                 >
                     <nb-label>Nome da Mae</nb-label>
-                    <nb-input v-model="motherName" :on-blur="() => $v.motherName.$touch()"/>
+                    <nb-input v-model="motherName" :on-blur="() => $v.motherName.$touch()" :maxLength="100"/>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -116,15 +116,15 @@
                      :success="!$v.motherCpf.$error && $v.motherCpf.$dirty"
                 >
                     <nb-label>CPF da Mae</nb-label>
-                    <nb-input v-model="motherCpf" :on-blur="() => $v.motherCpf.$touch()" keyboardType="numeric"/>
+                    <nb-input v-model="motherCpf" :on-blur="() => $v.motherCpf.$touch()" keyboardType="numeric" :maxLength="8"/>
                 </nb-item>
 
                 <nb-item stackedLabel
                      :error="$v.preferredDayForMonthlyPayment.$error && $v.preferredDayForMonthlyPayment.$dirty"
                      :success="!$v.preferredDayForMonthlyPayment.$error && $v.preferredDayForMonthlyPayment.$dirty"
                 >
-                    <nb-label>Dia Pref. para Pagamento da Mensalidade</nb-label>
-                    <nb-input v-model="preferredDayForMonthlyPayment" :on-blur="() => $v.preferredDayForMonthlyPayment.$touch()" keyboardType="numeric"/>
+                    <nb-label>Dia Preferencial para Pagamento da Mensalidade (5, 10, 15, 20 ou 25)</nb-label>
+                    <nb-input v-model="preferredDayForMonthlyPayment" :on-blur="() => $v.preferredDayForMonthlyPayment.$touch()" keyboardType="numeric" :maxLength="1"/>
                 </nb-item>
 
                 <nb-item class="action-buttons" full>
@@ -151,7 +151,6 @@ import camelCaseKeys from "camelcase-keys";
 import moment from "moment";
 
 const gradeValidator = value => [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(Number(value));
-const postcodeValidator = value => cep(value);
 const cpfValidator = value => isCPF(value);
 const preferredDayForMonthlyPaymentValidator = value => [5, 10, 15, 20, 25].includes(Number(value));
 
@@ -162,7 +161,7 @@ export default {
     data() {
         return {
             name: "",
-            birthdate: "",
+            birthdate: new Date('1990-01-02'),
             grade: "",
             postcode: "",
             street: "",
@@ -185,6 +184,8 @@ export default {
     methods: {
         ...mapActions(['addStudent', 'editStudent', 'resetCurrentStudent']),
         loadFormValues() {
+            this.$v.$reset();
+
             if (!this.currentStudent) {
                 return;
             }
@@ -203,6 +204,27 @@ export default {
         setBirthdate(value) {
             this.birthdate = moment(value).format('DD/MM/YYYY');
             this.$v.birthdate.$touch();
+        },
+        async onPostcodeComplete() {
+            if (!this.postcode || this.postcode.length < 8) {
+                return;
+            }
+
+            const addressFields = ['city', 'neighborhood', 'state', 'street'];
+            try {
+                const response = await cep(this.postcode);
+
+                Object.assign(this, response);
+
+                for (let field of addressFields) {
+                    this.$v[field].$touch();
+                }
+            } catch(e) {
+                for (let field of addressFields) {
+                    this[field] = "";
+                    this.$v[field].$touch();
+                }
+            }
         },
         async saveStudent() {
             this.$v.$touch();
@@ -246,7 +268,7 @@ export default {
         ...mapGetters(['currentStudent']),
         defaultDate() {
           if (!this.currentStudent || !this.currentStudent.birthdate) {
-              return new Date('1990-01-02');
+              return this.birthdate;
           }
 
           return moment(this.currentStudent.birthdate, "DD/MM/YYYY").toDate();
@@ -297,7 +319,6 @@ export default {
         },
         postcode: {
             required,
-            postcodeValidator,
         },
         street: {
             required,
