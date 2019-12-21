@@ -27,7 +27,14 @@
                      :success="!$v.grade.$error && $v.grade.$dirty"
                 >
                     <nb-label>Serie de Ingresso</nb-label>
-                    <nb-input v-model="grade" :on-blur="() => $v.grade.$touch()" keyboardType="numeric" :maxLength="1"/>
+                    <nb-picker
+                        mode="dropdown"
+                        headerBackButtonText="Voltar"
+                        :selectedValue="grade"
+                        :onValueChange="setGrade"
+                    >
+                        <item v-for="grade in gradeOptions" :label="grade.name" :value="grade.value" :key="grade.name"/>
+                    </nb-picker>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -100,7 +107,14 @@
                      :success="!$v.state.$error && $v.state.$dirty"
                 >
                     <nb-label>Estado</nb-label>
-                    <nb-input v-model="state" :on-blur="() => $v.state.$touch()" :maxLength="2"/>
+                    <nb-picker
+                        mode="dropdown"
+                        headerBackButtonText="Voltar"
+                        :selectedValue="state"
+                        :onValueChange="setState"
+                    >
+                        <item v-for="state in brazilStateOptions" :label="state.name" :value="state.value" :key="state.name"/>
+                    </nb-picker>
                 </nb-item>
 
                 <nb-item stackedLabel
@@ -116,15 +130,22 @@
                      :success="!$v.motherCpf.$error && $v.motherCpf.$dirty"
                 >
                     <nb-label>CPF da Mae</nb-label>
-                    <nb-input v-model="motherCpf" :on-blur="() => $v.motherCpf.$touch()" keyboardType="numeric" :maxLength="8"/>
+                    <nb-input v-model="motherCpf" :on-blur="() => $v.motherCpf.$touch()" keyboardType="numeric" :maxLength="11"/>
                 </nb-item>
 
                 <nb-item stackedLabel
                      :error="$v.preferredDayForMonthlyPayment.$error && $v.preferredDayForMonthlyPayment.$dirty"
                      :success="!$v.preferredDayForMonthlyPayment.$error && $v.preferredDayForMonthlyPayment.$dirty"
                 >
-                    <nb-label>Dia Preferencial para Pagamento da Mensalidade (5, 10, 15, 20 ou 25)</nb-label>
-                    <nb-input v-model="preferredDayForMonthlyPayment" :on-blur="() => $v.preferredDayForMonthlyPayment.$touch()" keyboardType="numeric" :maxLength="1"/>
+                    <nb-label>Dia Pref. para Pagamento da Mensalidade</nb-label>
+                    <nb-picker
+                        mode="dropdown"
+                        headerBackButtonText="Voltar"
+                        :selectedValue="preferredDayForMonthlyPayment"
+                        :onValueChange="setPreferredDayForMonthlyPayment"
+                    >
+                        <item v-for="day in preferredDayForMonthlyPaymentOptions" :label="day.name" :value="day.value" :key="day.name"/>
+                    </nb-picker>
                 </nb-item>
 
                 <nb-item class="action-buttons" full>
@@ -149,6 +170,9 @@ import { isCPF } from 'brazilian-values';
 import { required, maxLength, numeric } from "vuelidate/lib/validators"
 import camelCaseKeys from "camelcase-keys";
 import moment from "moment";
+import brasilStates from "../utils/brazil-states";
+import grades from "../utils/grades";
+import preferredDaysForMonthlyPayment from "../utils/preferred-days-for-monthly-payment";
 
 const gradeValidator = value => [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(Number(value));
 const cpfValidator = value => isCPF(value);
@@ -162,17 +186,17 @@ export default {
         return {
             name: "",
             birthdate: new Date('1990-01-02'),
-            grade: "",
+            grade: "1",
             postcode: "",
             street: "",
             number: "",
             complement: "",
             neighborhood: "",
             city: "",
-            state: "",
+            state: "PR",
             motherName: "",
             motherCpf: "",
-            preferredDayForMonthlyPayment: "",
+            preferredDayForMonthlyPayment: "5",
             minimumDate: new Date('1900-01-01'),
             maximumDate: new Date(),
         }
@@ -204,6 +228,18 @@ export default {
         setBirthdate(value) {
             this.birthdate = moment(value).format('DD/MM/YYYY');
             this.$v.birthdate.$touch();
+        },
+        setGrade(value) {
+            this.grade = value;
+            this.$v.grade.$touch();
+        },
+        setState(value) {
+            this.state = value;
+            this.$v.state.$touch();
+        },
+        setPreferredDayForMonthlyPayment(value) {
+            this.preferredDayForMonthlyPayment = value;
+            this.$v.preferredDayForMonthlyPayment.$touch();
         },
         async onPostcodeComplete() {
             if (!this.postcode || this.postcode.length < 8) {
@@ -274,16 +310,13 @@ export default {
           return moment(this.currentStudent.birthdate, "DD/MM/YYYY").toDate();
         },
         gradeOptions() {
-            const gradeOptions = [];
-
-            for (let i = 1; i <= 9; i++) {
-                gradeOptions.push({
-                    label: i,
-                    value: i,
-                })
-            }
-
-            return gradeOptions;
+            return grades;
+        },
+        brazilStateOptions() {
+            return brasilStates;
+        },
+        preferredDayForMonthlyPaymentOptions() {
+            return preferredDaysForMonthlyPayment;
         },
         formData() {
             return {
