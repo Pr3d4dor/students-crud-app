@@ -19,7 +19,7 @@ export function SET_STUDENTS(state, data) {
 export function ADD_STUDENT(state, data) {
     state.students.push({
         ...data,
-        id: state.students.length,
+        id: state.students ? state.students.length : 0,
     });
 
     updateStorage(state.students);
