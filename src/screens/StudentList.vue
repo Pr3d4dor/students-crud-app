@@ -43,7 +43,7 @@ export default {
             const students = JSON.parse(data);
             this.$store.state.loading = true;
 
-            if (students.length > 0) {
+            if (students && students.length > 0) {
                 this.$store.commit('SET_STUDENTS', students);
             } else {
                 this.$store.commit('SET_STUDENTS', []);
